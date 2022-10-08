@@ -2,7 +2,8 @@ import sys
 input=sys.stdin.readline
 N=(list(map(int,input().strip())))
 N.sort(reverse=True)
-if 0 not in N:
+# print(N)
+if N[len(N)-1]!=0:
     print(-1,end="")
 else:
     if sum(N)%3==0:
