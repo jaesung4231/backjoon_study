@@ -1,25 +1,27 @@
 import sys
-n=int(input())
-ans = 0
-row = [0] * n
+input=sys.stdin.readline
 
-def is_promising(x):
+n=int(input())
+ans=0
+board=([0]*n)
+
+def check(x):
     for i in range(x):
-        if row[x] == row[i] or abs(row[x] - row[i]) == abs(x - i):
+        if board[i]==board[x] or abs(board[x]-board[i])==abs(x-i):
             return False
     return True
 
-def n_queens(x):
+
+def dfs(x):
     global ans
-    if x == n:
-        ans += 1
+    if x==n:
+        ans+=1
         return
     else:
         for i in range(n):
-            # [x, i]에 퀸을 놓겠다.
-            row[x] = i
-            if is_promising(x):
-                n_queens(x+1)
+            board[x]=i
+            if check(x):
+                dfs(x+1)
 
-n_queens(0)
+dfs(0)
 print(ans)
