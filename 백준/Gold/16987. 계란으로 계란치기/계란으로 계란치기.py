@@ -1,51 +1,59 @@
+from collections import deque, defaultdict
+from copy import deepcopy
+from itertools import permutations, combinations
 import sys
 input=sys.stdin.readline
-n = int(input())
-eggs = []
-answer = 0
-S, W = 0, 1
 
-for _ in range(n):
-    eggs.append(list(map(int, input().split())))
+eggs=[]
+p=[]
+t=int(input())
+cnt=0
 
-def crash(nowIndex):
-    global answer
-    # 종료조건
-    if nowIndex == n:
-        breakEggs = 0
-        for i in range(n):
-            if eggs[i][S] <= 0:
-                breakEggs += 1
-        answer = max(answer, breakEggs)
+for i in range(t):
+    eggs.append(list(map(int,input().split())))
+
+def dfs(L):
+    global cnt
+    Allbreak=True
+    if L==t:
+        count=0
+        for i in range(t):
+            if eggs[i][0]<=0:
+                count+=1
+        cnt=max(cnt,count)
         return
-
-    # 자기가 깨져있는 경우 다음 계란으로
-    if eggs[nowIndex][S] <= 0:
-        crash(nowIndex + 1)
-        return
+    else:
+        now=eggs[L]
     
-    # 자기말고 다 깨져있는 상황인 경우
-    isAllBroken = True
-    for targetIndex in range(n):
-        if targetIndex == nowIndex: continue
-        if eggs[targetIndex][S] > 0:
-            isAllBroken = False
+
+    if now[0]<=0:
+        dfs(L+1)
+        return
+ 
+    for i in range(t):
+        if i==L:
+            continue
+        if eggs[i][0]>0:
+            Allbreak=False
             break
-    if isAllBroken:
-        answer = max(answer, n - 1)
+
+
+    if Allbreak:
+        cnt=max(cnt,t-1)
         return
 
-    # 때려보기
-    for targetIndex in range(n):
-        if targetIndex == nowIndex: continue
-        if eggs[targetIndex][S] <= 0: continue
-        # 때리기
-        eggs[nowIndex][S] -= eggs[targetIndex][W]
-        eggs[targetIndex][S] -= eggs[nowIndex][W]
-        crash(nowIndex + 1)
-        # 복구
-        eggs[nowIndex][S] += eggs[targetIndex][W]
-        eggs[targetIndex][S] += eggs[nowIndex][W]
-        
-crash(0)
-print(answer)
+    for i in range(t):
+        if i==L:
+            continue
+        if eggs[i][0]<=0:
+            continue
+        eggs[i][0]-=now[1]
+        now[0]-=eggs[i][1]
+        dfs(L+1)
+        eggs[i][0]+=now[1]
+        now[0]+=eggs[i][1]
+
+
+dfs(0)
+print(cnt)
+
