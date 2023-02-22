@@ -97,15 +97,11 @@ for i in range(t):
 
 ans=0
 
-# move(3,board)
-# move(2,board)
-# move(4,board)
-# move(2,board)
-# move(2,board)
-
 p=[]
 for i in product([1,2,3,4],repeat=5):
-    tmp=deepcopy(board)
+    tmp=[]
+    for u in range(t):
+        tmp.append(board[u][:])
     for j in i:
         move(j,tmp)
     for k in range(t):
@@ -114,9 +110,4 @@ for i in product([1,2,3,4],repeat=5):
         
 
 print(ans)
-
-
-
-
-
 
