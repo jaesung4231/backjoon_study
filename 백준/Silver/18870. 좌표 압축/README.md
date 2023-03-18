@@ -8,7 +8,7 @@
 
 ### 분류
 
-값 / 좌표 압축(coordinate_compression), 정렬(sorting)
+정렬, 값 / 좌표 압축
 
 ### 문제 설명
 
