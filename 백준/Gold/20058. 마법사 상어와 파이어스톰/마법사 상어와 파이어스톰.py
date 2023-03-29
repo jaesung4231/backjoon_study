@@ -10,9 +10,12 @@ dx=[-1,1,0,0]
 dy=[0,0,1,-1]
 N=2**n
 answer=0
+visited=[]
 for i in range(N):
     board.append(list(map(int,input().split())))
     next.append([0]*(N))
+    visited.append([0]*N)
+
 level=list(map(int,input().split()))
 
 
@@ -33,7 +36,7 @@ def makeBox(L):
     return tmp
 
 
-def turn(box,L):
+def turn(box):
     tmp=[]
     for i in range(len(box)):
         p=[]
@@ -44,19 +47,18 @@ def turn(box,L):
 
 
 def choose(L,board):
+    box=makeBox(L)
     for i in range(N):
         for j in range(N):
             if i%(2**L)==0 and j%(2**L)==0:
-                box=makeBox(L)
                 for x in range(2**L):
                     for y in range(2**L):
                         box[x][y]=board[i+x][j+y]
-                turnb=turn(box,L)
+                turnb=turn(box)
                 for x in range(2**L):
                     for y in range(2**L):
-                        next[i+x][j+y]=turnb[x][y]
+                        board[i+x][j+y]=turnb[x][y]
     
-    return next
 
 
 def check(x,y,board,melt):
@@ -72,44 +74,37 @@ def check(x,y,board,melt):
 def bfs(x,y,visited):
     queue=deque()
     queue.append([x,y])
-    visited[x,y]
+    visited[x][y]=1
     size=1
     while(queue):
         a,b=queue.popleft()
         for i in range(4):
             nx=a+dx[i]
             ny=b+dy[i]
-            if -1<nx<N and -1<ny<N and board[nx][ny]!=0 and (nx,ny) not in visited:
-                visited[nx,ny]
+            if -1<nx<N and -1<ny<N and board[nx][ny]!=0 and visited[nx][ny]==0:
+                visited[nx][ny]=1
                 queue.append([nx,ny])
                 size+=1
     return size
 
 
-
 for l in level:
-    next=choose(l,board)
+    choose(l,board)
     melt=[]
     for i in range(N):
         for j in range(N):
-            if next[i][j]!=0:
-                check(i,j,next,melt)
+            if board[i][j]!=0:
+                check(i,j,board,melt)
     for m in melt:
-        next[m[0]][m[1]]-=1
+        board[m[0]][m[1]]-=1
                 
-    for i in range(N):
-        board[i]=next[i][:]
-
-
-visited=defaultdict(int) 
 chunk=0
 for i in range(N):
     for j in range(N):
         if board[i][j]!=0:
             answer+=board[i][j]
-            if (i,j) not in visited:
+            if visited[i][j]==0:
                 chunk=max(bfs(i,j,visited),chunk)
-
 
 print(answer)
 print(chunk)
