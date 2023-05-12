@@ -1,15 +1,16 @@
 import sys
-N=int(input())
-s = [0 for i in range(301)]
-result = [0 for i in range(301)]
-for i in range(N):
-    s[i]=(int(sys.stdin.readline()))
+input=sys.stdin.readline
+n=int(input())
+stair=[]
+dp=[]
+for i in range(n):
+    stair.append(int(input()))
 
-result[0]=s[0]
-result[1]=max(s[0]+s[1],s[1])
-result[2]=max(s[1]+s[2],s[0]+s[2])
+dp.append(0)
+dp.append(stair[0])
+if n>1:
+    dp.append(stair[0]+stair[1])
+for i in range(2,n):
+    dp.append(max(dp[i-2]+stair[i]+stair[i-1],stair[i]+dp[i-1]))
 
-for i in range(3,N):
-    result[i]=max(result[i-3]+s[i-1]+s[i],result[i-2]+s[i])
-
-print(result[N-1],end="")
+print(dp[n])
