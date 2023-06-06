@@ -1,46 +1,63 @@
-from collections import deque
 import sys
-
+from collections import defaultdict, deque
 input=sys.stdin.readline
-N=int(input())
-for i in range(N):
-    p=list(input().strip())
-    size=int(input())
-    temp=(input().strip())
-    arr=[]
-    R_count=0
-    D_count=0
-    if len(temp)!=2:
-        arr=list(map(int,temp[1:len(temp)-1].split(',')))
-    
-    for i in range(len(p)):
-        if p[i]=='R':
-            R_count+=1
-        elif p[i]=='D':
-            if len(arr)==0:
-                D_count+=1
-                break
-            if R_count%2==0 or R_count==0:
-                arr.pop(0)
-            else:
-                arr.pop(len(arr)-1)
+T=int(input())    
 
-    
-    if D_count==0:
-        if (R_count%2)==0 or R_count==0:
-            print('[', end="")
-            for i in range(len(arr)):
-                print(arr[i],end="")
-                if i!=len(arr)-1:
-                    print(",",end="")
-            print(']')
-        else:
-            arr.reverse()
-            print('[', end="")
-            for i in range(len(arr)):
-                print(arr[i],end="")
-                if i!=len(arr)-1:
-                    print(",",end="")
-            print(']')
+def make(test):
+    tmp=test[1:len(test)-1].split(',')
+    num=deque()
+    if tmp:
+        for i in range(len(tmp)):
+            num.append(int(tmp[i]))
+    return num
+
+def out(arr):
+    ans="["
+    for i in range(len(arr)):
+        if i!=0:
+            ans+=","
+        ans+=str(arr[i])
+    ans+="]"
+    return ans
+
+
+
+for t in range(T):
+    order=list(input().strip())
+    n=int(input())
+    tmp=input().strip()
+    R_count=0
+    isError=False
+
+    if len(tmp)>2:
+        num=make(tmp)
     else:
+        num=[]
+
+    for o in order:
+        if o=="R":
+            R_count+=1
+        if o=="D":
+            if len(num)==0:
+                isError=True
+                break
+            elif R_count%2!=0:
+                num.pop()
+            elif R_count%2==0:
+                num.popleft()
+    
+    if isError:
         print("error")
+    elif R_count%2!=0:
+        num.reverse()
+        ans=out(num)
+        print(ans)
+    else:
+        ans=out(num)
+        print(ans)
+
+
+
+  
+
+
