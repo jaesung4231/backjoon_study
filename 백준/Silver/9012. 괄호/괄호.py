@@ -1,41 +1,23 @@
 import sys
-class Node: 
-    def __init__(self, item, next):
-        self.item=item
-        self.next=next
-class Stack:
-    def __init__(self):
-        self.last=None
-    def push(self, item):
-        self.last=Node(item, self.last)
-    def pop(self):
-        if self.last:
-            item=self.last.item
-            self.last=self.last.next
-            return item
-        else:
-            return(-1)
-
-table={
-    ')':'(',
-    '}':'{',
-    ']':'[',
-}
-
-N=int(input())
-stack=[]
-for k in range(N):
-    line=sys.stdin.readline().strip()
+from collections import deque
+input=sys.stdin.readline
+n=int(input())
+for i in range(n):
     stack=[]
-    for i in range(len(line)):
-        if line[i] not in table:
-            stack.append(line[i])    
-        elif (not stack) or (table[line[i]]!=stack.pop()):
-            print('NO')
-            break
-        if (i==(len(line)-1)) and len(stack)!=0:
-            print('NO')
-            break
-        elif i==(len(line)-1):
-            print('YES')
-        
+    arr=input().strip()
+    for a in arr:
+        V=True
+        if a=="(":
+            stack.append("(")
+        else:
+            if len(stack)>0:
+                stack.pop()
+            else:
+                V=False
+                break
+    if stack or V==False:
+        print("NO")
+    else:
+        print("YES")
+
+
