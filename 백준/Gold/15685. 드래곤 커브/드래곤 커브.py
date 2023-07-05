@@ -1,45 +1,35 @@
-from collections import deque, defaultdict
-from itertools import combinations, product, permutations
-from copy import deepcopy
-import heapq
-import sys
-input=sys.stdin.readline
-n=int(input())
-node=defaultdict(int)
-move=[[1,0],[0,-1],[-1,0],[0,1]]
-box=[[1,0],[0,1],[1,1]]
-ans=0
+ 
 
-def turn(dir):
-    if dir==3:
-        return 0
-    else:
-        return dir+1
+n = int(input())
 
-def draw(dir,k):
-    curve=[dir]
-    for i in range(k):
-        for j in range(len(curve)-1,-1,-1):
-            curve.append(turn(curve[j]))
-    return curve
+graph = [[0] * 101 for _ in range(101)]
+dx = [0, -1, 0, 1]
+dy = [1, 0, -1, 0]
 
 for i in range(n):
-    x,y,d,g=map(int,input().split())
-    spot=draw(d,g)
-    nx=x
-    ny=y
-    node[nx,ny]+=1
-    for s in spot:
-        nx=nx+move[s][0]
-        ny=ny+move[s][1]
-        node[nx,ny]+=1
 
-for no in node:
-    canbox=True
-    for i in range(3):
-        if (no[0]+box[i][0],no[1]+box[i][1]) not in node:
-            canbox=False
-            break
-    if canbox:
-        ans+=1
-print(ans)
+    y, x, d, g = map(int, input().split(' '))
+    graph[x][y] = 1
+
+    # 커브 리스트 만들기
+    curve = [d]
+    for j in range(g):
+        for k in range(len(curve) - 1, -1, -1):
+            curve.append((curve[k] + 1) % 4)
+
+    # 드래곤 커브 만들기
+    for j in range(len(curve)):
+        x += dx[curve[j]]
+        y += dy[curve[j]]
+        if x < 0 or x >= 101 or y < 0 or y >= 101:
+            continue
+
+        graph[x][y] = 1
+
+answer = 0
+for i in range(100):
+    for j in range(100):
+        if graph[i][j] == 1 and graph[i + 1][j] == 1 and graph[i][j + 1] == 1 and graph[i + 1][j + 1] == 1:
+            answer += 1
+
+print(answer)
