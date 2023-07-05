@@ -8,15 +8,7 @@ n=int(input())
 node=defaultdict(int)
 move=[[1,0],[0,-1],[-1,0],[0,1]]
 box=[[1,0],[0,1],[1,1]]
-board=[]
 ans=0
-for i in range(100):
-    board.append([0]*100)
-
-def pb(board):
-    for i in range(len(board)):
-        print(board[i])
-    print("===========")
 
 def turn(dir):
     if dir==3:
@@ -41,7 +33,6 @@ for i in range(n):
         nx=nx+move[s][0]
         ny=ny+move[s][1]
         node[nx,ny]+=1
-    # print(node)
 
 for no in node:
     canbox=True
