@@ -14,13 +14,14 @@ for i in range(m):
 def bfs(x,y,visited):
     queue=deque()
     queue.append(x)
+    queue.append(y)
     total=0
     while queue:
         a=queue.popleft()
         for g in graph[a]:
             if g==x or g==y:
                 continue
-            if visited[g]==0 or visited[g]>visited[a]+1:
+            if visited[g]==0:
                 queue.append(g)
                 visited[g]=visited[a]+1
                 total+=visited[g]
@@ -31,10 +32,10 @@ def bfs(x,y,visited):
 for com in combinations((range(0,n)),2):
     a,b=com[0],com[1]
     visited=[0]*n
-    dis1=bfs(a,b,visited)
-    dis2=bfs(b,a,visited)
-    if dis1+dis2<dis_ans:
-        dis_ans=dis1+dis2
+    dis=bfs(a,b,visited)
+    cost=dis
+    if cost<dis_ans:
+        dis_ans=cost
         answer=sorted(com)
     
 print(answer[0]+1,answer[1]+1,dis_ans*2)
