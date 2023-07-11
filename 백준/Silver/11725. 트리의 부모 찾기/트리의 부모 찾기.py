@@ -5,6 +5,7 @@ input=sys.stdin.readline
 n=int(input())
 dis=[0]*(n+1)
 tree=[[]for _ in range(n+1)]
+
 for _ in range(n-1):
     a,b=map(int,input().split())
     tree[a].append(b)
@@ -18,17 +19,14 @@ def bfs(x):
         a=queue.popleft()
         for t in tree[a]:
             if dis[t]==0:
-                dis[t]=dis[a]+1
+                dis[t]=a
                 queue.append(t)
 
 bfs(1)
 # print(dis)
 
 for i in range(2,n+1):
-    for t in tree[i]:
-        if dis[i]>dis[t]:
-            print(t)
-            break
+    print(dis[i])
 
 
 
