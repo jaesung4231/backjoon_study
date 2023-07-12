@@ -1,49 +1,48 @@
-from collections import deque
-from copy import deepcopy
-import queue
 import sys
+from collections import deque
 input=sys.stdin.readline
-N=int(input())
-color=[]
+n=int(input())
+board=[]
+visited=[[0]*n for i in range(n)]
 
 dx=[-1,1,0,0]
-dy=[0,0,-1,1]
+dy=[0,0,1,-1]
 
-def bfs(x,y,color):
-    ncol=color[x][y]
-    color[x][y]=0
+for i in range(n):
+    board.append(list(input().strip()))
+
+def normal(x,y):
     queue=deque()
     queue.append([x,y])
-    while(queue):
+    visited[x][y]=1
+    while queue:
         a,b=queue.popleft()
         for i in range(4):
             nx=a+dx[i]
             ny=b+dy[i]
-            if -1<nx<N and -1<ny<N and color[nx][ny]==ncol:
-                color[nx][ny]=0
+            if -1<nx<n and -1<ny<n and visited[nx][ny]==0 and board[nx][ny]==board[a][b]:
                 queue.append([nx,ny])
+                visited[nx][ny]=1
+ans=0
+for i in range(n):
+    for j in range(n):
+        if visited[i][j]==0:
+            normal(i,j)
+            ans+=1
 
-for i in range(N):
-    color.append(list(input().strip()))
+ans2=0
+for i in range(n):
+    for j in range(n):
+        visited[i][j]=0
+        if board[i][j]=='R':
+            board[i][j]='G'
 
-color_2=deepcopy(color)
-for i in range(N):
-    for j in range(N):
-        if color_2[i][j]=='R' or color_2[i][j]=="G":
-            color_2[i][j]='T'
-            
-cnt=0
-cnt_2=0
-for i in range(N):
-    for j in range(N):
-        if color[i][j]!=0:
-            bfs(i,j,color)
-            cnt+=1
-        if color_2[i][j]!=0:
-            bfs(i,j,color_2)
-            cnt_2+=1
 
-print(cnt, cnt_2)
-# for i in range(N):
-#     print(*color[i])
+for i in range(n):
+    for j in range(n):
+        if visited[i][j]==0:
+            normal(i,j)
+            ans2+=1
+ 
+print(ans,ans2)
 
