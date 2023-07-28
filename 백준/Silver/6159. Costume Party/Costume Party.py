@@ -6,12 +6,20 @@ weight=[]
 for i in range(n):
     weight.append(int(input()))
 
+weight.sort()
+left=0
+right=n-1
 ans=0
 
-for i in range(n):
-    for j in range(i+1,n):
-        cost=weight[i]+weight[j]
-        if cost<=s:
-            ans+=1
+# 1 2 3 5
+
+while left<=right:
+    sum=weight[left]+weight[right]
+    if sum<=s:
+        ans+=(right-left)
+        left+=1
+
+    elif sum>s:
+        right-=1
 
 print(ans)
