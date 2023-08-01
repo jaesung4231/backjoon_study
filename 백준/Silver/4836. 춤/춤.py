@@ -49,15 +49,15 @@ while True:
             else:
                 if len(ERROR)==1:
                     ans+=" error"
-                    ans+=f" {ERROR[0]}"
                 else:
                     ans+=" errors"
-                    if len(ERROR)>2:
-                        for i in range(len(ERROR)-2):
-                            ans+=f" {ERROR[i]},"
-                        ans+=f" {ERROR[-2]} and {ERROR[-1]}"
-                    else:
-                        ans+=f" {ERROR[0]} and {ERROR[1]}"
+
+                for i in range(len(ERROR)-2):
+                    ans+=f" {ERROR[i]},"
+                ans+=f" {ERROR[len(ERROR)-2]}"
+                
+                if len(ERROR)>=2:
+                    ans+=f" and {ERROR[len(ERROR)-1]}"
             ans+=":"
             for d in dance:
                 ans+=" "
