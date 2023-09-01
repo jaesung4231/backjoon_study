@@ -1,14 +1,9 @@
 import sys
-num=int(input())
-def GCD(x,y):
-    while(y):
-        x,y=y,x%y    
-    return x
-
-def LCM(x,y):
-    result=(x*y)//GCD(x,y)
-    return result
-
-for i in range(num):
-    x,y=map(int,sys.stdin.readline().split())
-    print(LCM(x,y))
+import math
+import heapq
+from collections import defaultdict, deque
+input=sys.stdin.readline
+N=int(input())
+for _ in range(N):
+    a,b=map(int,input().split())
+    print(math.lcm(a,b))
