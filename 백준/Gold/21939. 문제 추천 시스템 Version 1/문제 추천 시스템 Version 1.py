@@ -1,42 +1,42 @@
 import sys
 import heapq
 from collections import deque, defaultdict
-from queue import PriorityQueue
 input=sys.stdin.readline
-solved=defaultdict(bool)
+p1=[]
+p2=[]
+table=defaultdict(bool)
 
 N=int(input())
-p=[]
-p2=[]
-
 for _ in range(N):
     a,b=map(int,input().split())
-    heapq.heappush(p,[b,a])
+    heapq.heappush(p1,[b,a])
     heapq.heappush(p2,[-b,-a])
-    solved[a]=True
+    table[a]=True
+
 M=int(input())
 
-for _ in range(M):
-    c=list(map(str,input().split()))
-    if c[0] =="add":
-        while not solved[-p2[0][1]]:
+for i in range(M):
+    C=list(input().split())
+    if C[0]=="add":
+        while table[-p2[0][1]]!=True:
             heapq.heappop(p2)
-        while not solved[p[0][1]]:
-            heapq.heappop(p)
+        while table[p1[0][1]]!=True:
+            heapq.heappop(p1)     
         
-        heapq.heappush(p,[int(c[2]),int(c[1])])
-        heapq.heappush(p2,[-int(c[2]),-int(c[1])])
-        solved[int(c[1])]=True
+        heapq.heappush(p2,[-int(C[2]),-int(C[1])])
+        heapq.heappush(p1,[int(C[2]),int(C[1])])
+          
+        table[int(C[1])]=True
     
-    elif c[0] == "solved":
-        solved[int(c[1])]=False
     
+    elif C[0]=="solved":
+        table[int(C[1])]=False
     else:
-        if c[1]=="1":
-            while not solved[-p2[0][1]] :
-                heapq.heappop(p2)
+        if C[1]=="1":
+            while table[-p2[0][1]]!=True:
+               heapq.heappop(p2)
             print(-p2[0][1])
-        else:
-            while not solved[p[0][1]]:
-                heapq.heappop(p)
-            print(p[0][1])
+        if C[1]=="-1":
+            while table[p1[0][1]]!=True:
+               heapq.heappop(p1)
+            print(p1[0][1])
