@@ -1,28 +1,20 @@
-from collections import deque, defaultdict
-from copy import deepcopy
-from itertools import permutations, combinations
 import sys
+from collections import deque
 input=sys.stdin.readline
-n = int(input())
-dp=[0]*n
-day=[]
-price=[]
-for i in range(n):
+N=int(input())
+day=[0]
+money=[0]
+dp=[0]*(N+2)
+for _ in range(N):
     a,b=map(int,input().split())
     day.append(a)
-    price.append(b)
+    money.append(b)
+cur=0
 
-if day[0]-1<n:
-    dp[0]=price[0]
-else:
-    dp[0]=0
-
-for i in range(n):
-    if day[i]+i-1<n:
-        for j in range(i):
-            if day[j]+j-1<i:
-                dp[i]=max(price[i]+dp[j], dp[i])
-            else:
-                dp[i]=max(price[i],dp[i])
-
-print(max(dp))
+for i in range(1,N+1):
+    end=day[i]+i
+    if end<=(N+1):
+        cur=dp[i]+money[i]
+        for j in range(end,N+2):
+            dp[j]=max(cur,dp[j])
+print(dp[N+1])
