@@ -1,23 +1,12 @@
 import sys
 from collections import deque
 input=sys.stdin.readline
-N=int(input())
-ans=[1e9]*(N+1)
-queue=deque()
-for i in range(1,N+1):
-    if i**2<=N:
-        ans[i**2]=1
-        queue.append(i**2)
-
-while queue:
-    a=queue.popleft()
-    for i in range(1,N+1):
-        if (a+i**2)<=N:
-            if ans[a+i**2]>ans[a]+1:
-                ans[a+i**2]=ans[a]+1
-                queue.append(a+i**2)
-        else:
+n = int(input())
+dp = [x for x in range (n+1)]
+for i in range(1,n+1):
+    for j in range(1,i):
+        if j*j > i :
             break
-
-# print(ans[1:])
-print(ans[N])
+        if dp[i] > dp[i-j*j] + 1 :
+            dp[i] = dp[i-j*j] + 1
+print(dp[n])
